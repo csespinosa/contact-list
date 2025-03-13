@@ -1,0 +1,91 @@
+.add-contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: white;
+}
+
+
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.form-card:hover {
+    transform: scale(1.02);
+}
+
+/* Título */
+.title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Grupo de inputs */
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+.input-group input:focus {
+    border: 1px solid #007bff;
+    outline: none;
+}
+
+/* Botón de guardar */
+.btn-save {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.btn-save:hover {
+    background: #0056b3;
+}
+
+/* Botón de volver */
+.btn-back {
+    display: block;
+    background: none;
+    color: #007bff;
+    font-size: 1rem;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none;
+    transition: color 0.3s ease;
+}
+
+.btn-back:hover {
+    color: #0056b3;
+}
