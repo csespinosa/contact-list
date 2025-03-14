@@ -45,6 +45,6 @@
 
 .agenda-card:hover {
     transform: translateY(-5px);
-    background-color: #007bff;
+    background-color: #3adf66;
     color: white;
 }

@@ -73,7 +73,7 @@ const AddContactForm = () => {
                             name="email"
                             value={contact.email}
                             onChange={handleChange}
-                            placeholder="@correo.com"
+                            placeholder="Correo Electrónico"
                             required
                         />
                     </div>
@@ -84,7 +84,7 @@ const AddContactForm = () => {
                             name="phone"
                             value={contact.phone}
                             onChange={handleChange}
-                            placeholder="Ej. +569"
+                            placeholder="Número Telefónico"
                             required
                         />
                     </div>
@@ -105,6 +105,9 @@ const AddContactForm = () => {
                 </form>
                 <button className="btn-back" onClick={() => navigate(`/contacts/${slug}`)}>
                     ← Volver a Contactos
+                </button>
+                <button className="btn-back" onClick={() => navigate(`/`)}>
+                    ← Volver a Home
                 </button>
             </div>
         </div>

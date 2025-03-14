@@ -75,6 +75,9 @@ const ContactCard = () => {
                     <p className="text-center no-contacts">No hay contactos disponibles.</p>
                 )}
             </div>
+            <button className="btn-back" onClick={() => navigate(`/`)}>
+                ← Volver a Home
+            </button>
 
             {selectedContact && (
                 <ModalToDelete contactId={selectedContact} onDelete={handleDelete} />
