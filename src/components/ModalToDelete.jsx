@@ -1,57 +1,47 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import "../styles/ModalToDelete.css"; // Asegúrate de tener este archivo de estilos
 
-const ModalToDelete = ({ contactId, onDelete }) => {
-    const { slug } = useParams();
-    const API_BASE = `https://playground.4geeks.com/contact/agendas/${slug}/contacts/${contactId}`;
+const ModalToDelete = ({ contactId, onDelete, onClose, isOpen }) => {
+    const [isClosing, setIsClosing] = useState(false);
 
-    const deleteContact = async () => {
-        try {
-            const response = await fetch(API_BASE, {
-                method: "DELETE",
-                headers: {
-                    "Accept": "application/json",
-                },
-            });
+    if (!isOpen) return null;
 
-            if (!response.ok) throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);
+    const handleConfirmDelete = () => {
+        onDelete(contactId);
+    };
 
-            console.log(`Contacto ${contactId} eliminado correctamente`);
-            onDelete(contactId);
-        } catch (error) {
-            console.error("Error al eliminar contacto:", error);
-        }
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 300); // Duración de la animación
     };
 
     return (
-        <div className="modal fade" id="deleteModal" tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">¿Estás seguro?</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                        <p>Si eliminas este contacto, no podrás recuperarlo.</p>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-                        <button type="button" className="btn btn-danger" onClick={deleteContact} data-bs-dismiss="modal">
-                            Sí, eliminar
-                        </button>
-                    </div>
+        <div className={`modal-overlay ${isClosing ? 'modal-closing' : ''}`}>
+            <div className="modal-content">
+                <button className="close-button" onClick={handleClose}>×</button>
+                <h2>¿Estás seguro?</h2>
+                <p>Si eliminas este contacto, no podrás recuperarlo.</p>
+                
+                <div className="button-group">
+                    <button 
+                        className="cancel-button" 
+                        onClick={handleClose}
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                        className="delete-button" 
+                        onClick={handleConfirmDelete}
+                    >
+                        Eliminar
+                    </button>
                 </div>
             </div>
         </div>
     );
-};
-
-ModalToDelete.propTypes = {
-    contactId: PropTypes.number.isRequired,
-    onDelete: PropTypes.func.isRequired,
 };
 
 export default ModalToDelete;

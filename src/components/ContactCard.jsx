@@ -3,32 +3,79 @@ import { useNavigate, useParams } from "react-router-dom";
 import contactImg from "../assets/usuario.webp";
 import "../styles/ContactCard.css";
 import ModalToDelete from "./ModalToDelete";
+import ModalToEdit from "./ModalToEdit";
 
 const ContactCard = () => {
     const { slug } = useParams();
     const [contacts, setContacts] = useState([]);
     const [selectedContact, setSelectedContact] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [contactToEdit, setContactToEdit] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Nuevo estado para el modal de eliminación
     const navigate = useNavigate();
     const API_BASE = `https://playground.4geeks.com/contact/agendas/${slug}`;
 
     useEffect(() => {
-        const fetchContacts = async () => {
-            try {
-                const response = await fetch(API_BASE);
-                if (!response.ok) throw new Error(`Error HTTP ${response.status}`);
-                const data = await response.json();
-                setContacts(data.contacts || []);
-            } catch (error) {
-                console.error(`Error cargando contactos: ${error}`);
-                setContacts([]);
-            }
-        };
         fetchContacts();
     }, [slug]);
 
-    const handleDelete = (contactId) => {
-        setContacts(contacts.filter(contact => contact.id !== contactId));
+    const fetchContacts = async () => {
+        try {
+            const response = await fetch(API_BASE);
+            if (!response.ok) throw new Error(`Error HTTP ${response.status}`);
+            const data = await response.json();
+            setContacts(data.contacts || []);
+        } catch (error) {
+            console.error(`Error cargando contactos: ${error}`);
+            setContacts([]);
+        }
+    };
+
+    const handleDelete = async (contactId) => {
+        try {
+            const response = await fetch(`${API_BASE}/contacts/${contactId}`, {
+                method: 'DELETE',
+            });
+            
+            if (response.ok) {
+                setContacts(contacts.filter(contact => contact.id !== contactId));
+                setSelectedContact(null);
+                setIsDeleteModalOpen(false);
+            } else {
+                console.error(`Error al eliminar: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`Error eliminando contacto: ${error}`);
+        }
+    };
+
+    // Función para abrir el modal de eliminación
+    const handleDeleteClick = (contactId) => {
+        setSelectedContact(contactId);
+        setIsDeleteModalOpen(true);
+    };
+
+    // Función para cerrar el modal de eliminación
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
         setSelectedContact(null);
+    };
+
+    // Funciones para editar...
+    const handleEditClick = (contact) => {
+        setContactToEdit(contact);
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
+        setContactToEdit(null);
+    };
+
+    const handleContactUpdate = () => {
+        fetchContacts();
+        setIsEditModalOpen(false);
+        setContactToEdit(null);
     };
 
     return (
@@ -55,14 +102,15 @@ const ContactCard = () => {
                                         <p className="mb-0"><i className="fas fa-envelope"></i> {contact.email}</p>
                                     </div>
                                     <div className="contact-actions">
-                                        <button className="btn btn-outline-secondary edit-btn">
+                                        <button 
+                                            className="btn btn-outline-secondary edit-btn"
+                                            onClick={() => handleEditClick(contact)}
+                                        >
                                             <i className="fas fa-pencil-alt"></i>
                                         </button>
                                         <button
                                             className="btn btn-outline-danger delete-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal"
-                                            onClick={() => setSelectedContact(contact.id)}
+                                            onClick={() => handleDeleteClick(contact.id)}
                                         >
                                             <i className="fas fa-trash"></i>
                                         </button>
@@ -79,9 +127,22 @@ const ContactCard = () => {
                 ← Volver a Home
             </button>
 
-            {selectedContact && (
-                <ModalToDelete contactId={selectedContact} onDelete={handleDelete} />
+            {/* Modifica cómo se muestra el modal de eliminación */}
+            {isDeleteModalOpen && selectedContact && (
+                <ModalToDelete 
+                    contactId={selectedContact} 
+                    onDelete={handleDelete} 
+                    onClose={handleCloseDeleteModal}
+                    isOpen={isDeleteModalOpen}
+                />
             )}
+
+            <ModalToEdit 
+                isOpen={isEditModalOpen}
+                onClose={handleCloseEditModal}
+                contactToEdit={contactToEdit}
+                onSave={handleContactUpdate}
+            />
         </div>
     );
 };
