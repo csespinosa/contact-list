@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/ModalToDelete.css"; // Asegúrate de tener este archivo de estilos
+import "../styles/ModalToDelete.css";
 
 const ModalToDelete = ({ contactId, onDelete, onClose, isOpen }) => {
     const [isClosing, setIsClosing] = useState(false);
@@ -15,7 +15,7 @@ const ModalToDelete = ({ contactId, onDelete, onClose, isOpen }) => {
         setTimeout(() => {
             setIsClosing(false);
             onClose();
-        }, 300); // Duración de la animación
+        }, 300);
     };
 
     return (

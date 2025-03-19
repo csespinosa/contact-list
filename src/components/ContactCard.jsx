@@ -11,7 +11,7 @@ const ContactCard = () => {
     const [selectedContact, setSelectedContact] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [contactToEdit, setContactToEdit] = useState(null);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Nuevo estado para el modal de eliminación
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
     const navigate = useNavigate();
     const API_BASE = `https://playground.4geeks.com/contact/agendas/${slug}`;
 
@@ -49,19 +49,16 @@ const ContactCard = () => {
         }
     };
 
-    // Función para abrir el modal de eliminación
     const handleDeleteClick = (contactId) => {
         setSelectedContact(contactId);
         setIsDeleteModalOpen(true);
     };
 
-    // Función para cerrar el modal de eliminación
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedContact(null);
     };
 
-    // Funciones para editar...
     const handleEditClick = (contact) => {
         setContactToEdit(contact);
         setIsEditModalOpen(true);
@@ -127,7 +124,6 @@ const ContactCard = () => {
                 ← Volver a Home
             </button>
 
-            {/* Modifica cómo se muestra el modal de eliminación */}
             {isDeleteModalOpen && selectedContact && (
                 <ModalToDelete 
                     contactId={selectedContact} 
